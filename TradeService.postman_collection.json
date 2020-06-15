@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "63c2aa0c-9f05-485d-aba3-2d0a029d228f",
+		"name": "TradeService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all trade services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8099/trades/all?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades",
+						"all"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all active trades",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8099/trades/active?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades",
+						"active"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new trade(With expired maturity date)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n        \"tradeId\": \"T1\",\r\n        \"version\": 1,\r\n        \"counterPartyId\": \"CP-1\",\r\n        \"bookId\": \"B1\",\r\n        \"maturity\": \"2020-05-19T18:30:00.000+00:00\",\r\n        \"createdDate\": \"2020-06-04T06:59:39.366+00:00\",\r\n        \"expired\": \"Y\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/trades?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new trade(With all valid data)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n        \"tradeId\": \"T1\",\r\n        \"version\": 1,\r\n        \"counterPartyId\": \"CP-1\",\r\n        \"bookId\": \"B1\",\r\n        \"maturity\": \"2021-05-19\",\r\n        \"createdDate\": \"2020-06-04T06:59:39.366+00:00\",\r\n        \"expired\": \"N\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/trades?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update existing trade(With Higher version)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n        \"tradeId\": \"T1\",\r\n        \"version\": 2,\r\n        \"counterPartyId\": \"CP-1\",\r\n        \"bookId\": \"B1\",\r\n        \"maturity\": \"2021-05-19\",\r\n        \"createdDate\": \"2020-06-04T06:59:39.366+00:00\",\r\n        \"expired\": \"N\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/trades?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update existing trade(With Lower version)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n        \"tradeId\": \"T1\",\r\n        \"version\": 1,\r\n        \"counterPartyId\": \"CP-1\",\r\n        \"bookId\": \"B1\",\r\n        \"maturity\": \"2021-05-19\",\r\n        \"createdDate\": \"2020-06-04T06:59:39.366+00:00\",\r\n        \"expired\": \"N\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/trades?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update trade maturity flag with manual check",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8099/trades/archive?version=1.0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"trades",
+						"archive"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
