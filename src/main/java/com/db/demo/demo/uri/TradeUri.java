@@ -1,5 +1,10 @@
 package com.db.demo.demo.uri;
 
+
+/**
+ * @author Savitha
+ */
+
 public class TradeUri {
     public static final String VERSION = "version=1.0";
     public static final String TRADES = "/trades";

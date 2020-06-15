@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author Savitha
+ */
+
 @Repository
 public class TradeRepositoryImpl implements TradeRepository {
 

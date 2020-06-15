@@ -1,5 +1,7 @@
 package com.db.demo.demo.dto;
 
+import com.db.demo.demo.util.CustomDateSerializerToddMMYYY;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -8,6 +10,10 @@ import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 import java.util.Date;
+
+/**
+ * @author Savitha
+ */
 
 @Data
 @Builder
@@ -20,11 +26,13 @@ public class TradeDto implements Serializable {
     @NotNull(message = "trade Id can not be null")
     private String tradeId;
     @NotNull(message = "version can not be null")
-    private int version;
+    private Integer version;
     private String counterPartyId;
     private String bookId;
     @NotNull(message = "maturity date can not be null")
+//    @JsonSerialize(using = CustomDateSerializerToddMMYYY.class)
     private Date maturity;
+//    @JsonSerialize(using = CustomDateSerializerToddMMYYY.class)
     private Date createdDate;
     private String expired;
 }

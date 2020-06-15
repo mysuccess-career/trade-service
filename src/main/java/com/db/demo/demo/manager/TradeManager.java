@@ -3,9 +3,9 @@ package com.db.demo.demo.manager;
 import com.db.demo.demo.dto.TradeDto;
 import com.db.demo.demo.dto.TradeResponseDto;
 import com.db.demo.demo.exception.TradeServiceException;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -35,14 +35,15 @@ public interface TradeManager {
 
     /**
      * Creates/updates , new/existing trade for the given criteria.
+     * @param tradeDto
      */
-    TradeResponseDto updateTrade(TradeDto tradeDto) throws TradeServiceException;
+    TradeResponseDto updateTrade(List<TradeDto> tradeDto) throws TradeServiceException, ParseException;
 
     /**
      * Checks if the trade is getting expired and updates the same and returns tradeIds which are expired.
      *
      * @return
      */
-    List<String> updateTradeExpiration();
+    List<String> updateTradeExpiration() throws ParseException;
 
 }

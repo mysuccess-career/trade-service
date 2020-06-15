@@ -7,6 +7,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+
+/**
+ * @author Savitha
+ */
+
 @Entity
 @Data
 @Table(name = "trade_store")

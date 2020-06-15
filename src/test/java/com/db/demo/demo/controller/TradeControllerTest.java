@@ -1,5 +1,6 @@
 package com.db.demo.demo.controller;
 
+import com.db.demo.demo.dto.ResponseTemplate;
 import com.db.demo.demo.dto.TradeDto;
 import com.db.demo.demo.dto.TradeResponseDto;
 import com.db.demo.demo.exception.TradeServiceException;
@@ -10,12 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 
 @ExtendWith({MockitoExtension.class})
 class TradeControllerTest {
@@ -68,12 +68,14 @@ class TradeControllerTest {
         Mockito.when(tradeManager.getActiveExistingTrades()).thenReturn(activeTrades);
 
         //WHEN
-        ResponseEntity<Object> allTrades = tradeController.geActiveExistingTrades();
+        ResponseEntity<ResponseTemplate> responseEntity = tradeController.geActiveExistingTrades();
 
         //THEN
-        List<TradeDto> tradeDtos = (List<TradeDto>) allTrades.getBody();
-        Assertions.assertNotNull(tradeDtos);//TODO more assertions can be added for data check
+        ResponseTemplate responseTemplate = responseEntity.getBody();
 
+        List<TradeDto> tradeDtos = (List<TradeDto>) responseTemplate.getData();
+        Assertions.assertNotNull(tradeDtos);//TODO more assertions can be added for data check
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         //VERIFY
         Mockito.verify(tradeManager).getActiveExistingTrades();
     }
@@ -85,12 +87,14 @@ class TradeControllerTest {
         Mockito.when(tradeManager.getAllExistingTrades()).thenReturn(allTrades);
 
         //WHEN
-        ResponseEntity<Object> allTrades = tradeController.getAllExistingTrades();
+        ResponseEntity<ResponseTemplate> allTrades = tradeController.getAllExistingTrades();
 
         //THEN
-        List<TradeDto> tradeDTOs = (List<TradeDto>) allTrades.getBody();
+        ResponseTemplate responseTemplate = allTrades.getBody();
+        List<TradeDto> tradeDTOs = (List<TradeDto>) responseTemplate.getData();
         Assertions.assertNotNull(tradeDTOs);
         Assertions.assertEquals(2, tradeDTOs.size());//TODO more assertions can be added for data check
+        Assertions.assertEquals(HttpStatus.OK, allTrades.getStatusCode());
 
         //VERIFY
         Mockito.verify(tradeManager).getAllExistingTrades();
@@ -103,30 +107,33 @@ class TradeControllerTest {
         TradeDto tradeUpdatesDto = activeTrade;
         tradeUpdatesDto.setVersion(3);
         TradeResponseDto tradeResponseDto = new TradeResponseDto();
-        Mockito.when(tradeManager.updateTrade(tradeUpdatesDto)).thenReturn(tradeResponseDto);
+        Mockito.when(tradeManager.updateTrade(Collections.singletonList(tradeUpdatesDto))).thenReturn(tradeResponseDto);
 
         //WHEN
-        ResponseEntity<Object> responseEntity = tradeController.updateTrade(tradeUpdatesDto);
+        ResponseEntity<ResponseTemplate> responseEntity = tradeController.updateTrade(Collections.singletonList(tradeUpdatesDto));
 
         //THEN
-        Assertions.assertNotNull(responseEntity);
+        ResponseTemplate responseTemplate = responseEntity.getBody();
+
+        Assertions.assertNotNull(responseTemplate);
         Assertions.assertNotNull(responseEntity.getBody());//TODO more assertions can be added for data check
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         //VERIFY
-        Mockito.verify(tradeManager).updateTrade(tradeUpdatesDto);
+        Mockito.verify(tradeManager).updateTrade(Collections.singletonList(tradeUpdatesDto));
     }
 
     @Test
     @DisplayName("Test to create trade for version validation")
-    void updateTradeForException() throws TradeServiceException {
+    void updateTradeForException() throws TradeServiceException, ParseException {
         //GIVEN
         TradeDto tradeDto = TradeDto.builder().tradeId("T1").bookId("B1").counterPartyId("CP-1").build();
-        Mockito.when(tradeManager.updateTrade(tradeDto)).thenThrow(TradeServiceException.class);
+        Mockito.when(tradeManager.updateTrade(Collections.singletonList(tradeDto))).thenThrow(TradeServiceException.class);
 
         //WHEN //THEN
-        Assertions.assertThrows(TradeServiceException.class, () -> tradeController.updateTrade(tradeDto));
+        Assertions.assertThrows(TradeServiceException.class, () -> tradeController.updateTrade(Collections.singletonList(tradeDto)));
 
         //VERIFY
-        Mockito.verify(tradeManager).updateTrade(tradeDto);
+        Mockito.verify(tradeManager).updateTrade(Collections.singletonList(tradeDto));
     }
 }

@@ -13,6 +13,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Savitha
+ */
+
 @Data
 @Validated
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,5 +27,6 @@ public class TradeResponseDto implements Serializable {
     private Integer noOfTradesCreated;
     private List<TradeStoreEntity> tradeDtos;
     private boolean isTradeMaturityExpired;
+    private List<String> expiredTradeIds;
 
 }

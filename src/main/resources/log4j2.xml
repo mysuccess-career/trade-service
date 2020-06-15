@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" includeLocation="true">
+    <Properties>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd
+            HH:mm:ss.SSS}|ServiceName=TRADE|%level|Hostname=${hostName}|Thread=%t|Class=%c{1}|CODE=%msg
+            %n
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="RollingRAFAppender"
+                                 fileName="/usr/share/tradeService/logs/trade-service.log"
+                                 filePattern="/usr/share/tradeService/logs/trade-service.%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="32 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy
+                    max="1000">
+                <Delete basePath="/usr/share/tradeService/logs" maxDepth="1">
+                    <IfFileName glob="trade-service*.log.gz">
+                        <IfAccumulatedFileSize
+                                exceeds="2 GB"/>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+        <Async name="AsyncRollingRAFAppender">
+            <AppenderRef ref="RollingRAFAppender"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="com.db.demo" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncRollingRAFAppender"/>
+        </AsyncLogger>
+        <AyncRoot level="ERROR">
+            <AppenderRef ref="AsyncRollingRAFAppender"/>
+        </AyncRoot>
+    </Loggers>
+</Configuration>

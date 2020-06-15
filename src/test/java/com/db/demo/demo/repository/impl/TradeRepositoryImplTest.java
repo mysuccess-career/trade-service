@@ -6,6 +6,7 @@ import com.db.demo.demo.repository.TradeRepository;
 import com.db.demo.demo.repository.jpa.TradeRepositoryJpa;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +26,7 @@ import java.util.List;
 class TradeRepositoryImplTest implements ApplicationRunner {
 
     private static List<TradeStoreEntity> tradeStoreEntities = null;
-
+    private static boolean isPreCreatedEntitiesStored = false;
     @Autowired
     private TradeRepository tradeRepository;
 
@@ -69,30 +70,41 @@ class TradeRepositoryImplTest implements ApplicationRunner {
     }
 
     List<TradeStoreEntity> savePreCreatedEntities() {
-        return tradeRepositoryJpa.saveAll(tradeStoreEntities);
+        List<TradeStoreEntity> tradeStoreEntities = new ArrayList<>();
+        if(!isPreCreatedEntitiesStored) {
+            tradeStoreEntities = tradeRepositoryJpa.saveAll(TradeRepositoryImplTest.tradeStoreEntities);
+            isPreCreatedEntitiesStored = true;
+        }
+        return tradeStoreEntities;
     }
 
 
     @Test
     void getAllActiveExistingTrades() {
         savePreCreatedEntities();
-        List<TradeStoreEntity> tradeStoreEntities = tradeRepository.getAllExistingTrades();
+        List<TradeStoreEntity> tradeStoreEntities = tradeRepository.getAllActiveExistingTrades();
         Assertions.assertNotNull(tradeStoreEntities);
     }
 
     @Test
     void getAllExistingTrades() {
+        savePreCreatedEntities();
+        List<TradeStoreEntity> tradeStoreEntities = tradeRepository.getAllExistingTrades();
+        Assertions.assertNotNull(tradeStoreEntities);
     }
 
     @Test
+    @Disabled
     void updateTradeExpiration() {
     }
 
     @Test
+    @Disabled
     void saveAll() {
     }
 
     @Test
+    @Disabled
     void getAllActiveTrades() {
     }
 
